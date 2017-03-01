@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>-Generador de Codigos-</title>
+<link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function(){
+
+        	$('#calcular').click(
+        		function(){
+			           
+			            if (validaCampos() == false){ return false;}
+					    fecha = obtieneFecha();               						    
+	                	suma = parseInt(fecha) + parseInt($('#idcomprador').val()) + 333 + parseInt($('#folio').val()) + parseInt($('#noarticulos').val()) + parseInt($('#notienda').val());
+	                	suma = validaSuma(suma);
+	                	codigo = generaCodigo(suma)	                
+	                	$("#lbl_codigo").html('<b>' +  codigo + '</b>');
+	             		$('#clave').fadeIn();
+	             		mostrarCampos(false);
+
+
+        	});
+
+			$('#nuevo').click(
+        		function(){
+			           mostrarCampos(true);			                     	
+
+        	});        	
+
+        	function resetMensajes(){
+
+        			$("#clave").hide();
+        			$("#error").hide();        			        		
+        	}
+
+          	function obtieneCaracter(pos){
+
+          			var palabra = 'MURCIELAGO'
+	                var arreglo = palabra.split('');
+	                var caracter = arreglo[pos];
+	                return caracter;
+        	}
+
+          	function validaSuma(suma){
+          			if (suma.toString.length < 6){
+          				suma = '0' + suma;
+          			}
+          			else {
+          				// aqui me quede
+
+          			}	
+	                return suma;
+        	}        	
+
+          	function obtieneFecha(){
+
+	          			date = new Date();
+	                	dia = date.getDate();		                	
+	                	if (dia <= 9 ){dia = '0'+ dia;}
+	                	mes = date.getMonth() + 1; ' regresa del 0 al 11'
+	                	if (mes <= 9 ){mes = '0'+ mes;}
+	                	ano = date.getFullYear();
+	                	ano = ano.toString().substring(2, 4);
+	                	fecha = dia + mes + ano;
+	                	return fecha;
+        	}
+
+          	function validaCampos(){
+
+						if($("#folio").val().length < 1) {  
+					        $('#error').fadeIn();
+					        return false;  
+					    }  
+
+	            		if($("#noarticulos").val().length < 1) {  
+					        $('#error').fadeIn();
+					        return false;  
+					    }  
+
+	            		if($("#notienda").val().length < 1) {  
+					        $('#error').fadeIn();
+					        return false;  
+					    }  
+
+	            		if($("#idcomprador").val().length < 1) {  
+					        $('#error').fadeIn();
+					        return false;  
+					    }  
+
+        	}
+
+          	function generaCodigo(suma){
+
+	          		var arreglosuma = suma.toString().split('');
+                	var codigo = '';
+                	for(i=0; i < suma.toString().length; i++) {
+                		digito = arreglosuma[i];
+                		if (digito == 0) {digito = 9; } else {digito = digito - 1 ;}
+                		codigo = codigo + obtieneCaracter(digito);
+                	}
+                	return codigo;
+        	}        	
+
+			function limpiarCampos(){
+
+					$("#noarticulos").val('');
+					$("#folio").val('');
+					$("#notienda").val('');
+					$("#idcomprador").val('');
+
+			}
+
+
+          	function mostrarCampos(flag){
+
+          		if (flag == false) {
+          		   		
+	                	$('.animate1').hide();  
+	                	$('.animate3').hide();
+	                	$('.animate2').show();
+
+	                }else{
+
+	                	$('.animate1').show();  
+	                	$('.animate3').show();
+	                	$('.animate2').hide();
+						limpiarCampos();
+	                	resetMensajes();
+
+
+
+	                }
+
+	          		
+        	}
+
+    });
+</script>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body class="loginpage">
+
+<div class="loginpanel">
+    <div class="loginpanelinner">
+        <div class="logo animate0 bounceIn"><img src="images/logo.png" alt="" /></div>        
+            <div class="inputwrapper login-alert" id="clave">                
+                <center><h2 class="widgettitle title-success" id="lbl_codigo" name="lbl_codigo"></h2></center>
+                <br>
+            </div>            
+            <div class="inputwrapper login-alert" id="error">                
+                <center><h4 class="widgettitle title-warning"><b>Los campos no pueden estar vacios</b></h4></center>
+                <br>
+            </div>                    
+            <div class="inputwrapper animate1 bounceIn">
+                <input type="number" name="folio" id="folio"  placeholder="Numero De Folio" required />
+            </div>
+            <div class="inputwrapper animate1 bounceIn">
+                <input type="number" name="noarticulos" id="noarticulos"  placeholder="Numer De Articulos"  required />
+            </div>
+            <div class="inputwrapper animate1 bounceIn">
+                <input type="number" name="notienda" id="notienda"  placeholder="# Tienda" required/>
+            </div>
+            <div class="inputwrapper animate1 bounceIn">
+                <input type="number" name="idcomprador" id="idcomprador"  placeholder="Comprador"  required />
+            </div>
+            <div class="inputwrapper animate3 bounceIn">
+                <button type="button" name="calcular" id="calcular">Generar</button>
+            </div>
+            <div class="inputwrapper animate2 bounceIn" hidden="true">
+                <button type="button" name="nuevo" id="nuevo" >Nueva Clave</button>
+            </div>                                 
+    </div><!--loginpanelinner-->
+</div><!--loginpanel-->
+
+<div class="loginfooter">
+    <p>&copy; Alsuper All Rights Reserved.</p>
+</div>
+
+</body>
+</html>
